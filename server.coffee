@@ -67,16 +67,16 @@ exports.remindVote = !->
 ### Phase-switch functions ###
 
 exports.startgame = !->
-	Db.shared.set 'questiondeck', [0..questionCards.length - 1]
-	Db.shared.set 'answerdeck', [0..answerCards.length - 1]
+	Db.shared.set 'questiondeck', [0..questionCards.length - 1] # [0..Black.cards.length - 1]
+	Db.shared.set 'answerdeck', [0..answerCards.length - 1] # [0..White.cards.length - 1]
 	Db.shared.set 'round', 0
 	Db.shared.set 'score', {}
 	Db.shared.set 'winners', {}
 	Db.shared.set 'phase', 'starting'
  
 	# can be used to add cards during a game with an upgrade
-	Db.shared.set 'questiondecksize', questionCards.length
-	Db.shared.set 'answerdecksize', answerCards.length
+	Db.shared.set 'questiondecksize', questionCards.length # Black.cards.length
+	Db.shared.set 'answerdecksize', answerCards.length # White.cards.length
 
 	for uid in Plugin.userIds()
 		Db.personal(uid).set 'playedcards', ''
@@ -239,15 +239,17 @@ exports.closevotes = !->
 	log 'Checking to see who played winning card', wincards
 	if wincards.length
 		for wincard in wincards
+			log 'Winning Card:', wincard
 			for userId in Plugin.userIds()
 				if playedcards = Db.personal(userId).get 'playedcards'
-					log '  Comparing', JSON.stringify(playedcards), 'With', wincards
+					log '  Comparing', JSON.stringify(playedcards), 'With', wincard
 					log 'UserId:', userId
 					if JSON.stringify(playedcards) == wincard
-						log '    Found a winner: ' + userId
+						log userId, 'Played Card', wincard
 						winners.push userId
-				# Reset played cards
-				Db.personal(userId).set 'playedcards', null
+		# Finally, Reset played cards
+		for userId in Plugin.userIds()
+			Db.personal(userId).set 'playedcards', null
 	else
 		for userId in Plugin.userIds()
 			Db.personal(userId).set 'playedcards', null
@@ -429,7 +431,7 @@ drawQuestionCard = !->
 
 	r = Math.floor(Math.random()*deck.length)
 	cardId = deck[r]
-	card = questionCards[cardId]
+	card = questionCards[cardId] # Black.cards[cardId]
 
 	deck.splice(r, 1)
 	Db.shared.set 'questiondeck', deck
@@ -442,7 +444,7 @@ drawAnswerCard = !->
 
 	r = Math.floor(Math.random()*deck.length)
 	cardId = deck[r]
-	card = answerCards[cardId]
+	card = answerCards[cardId] # White.cards[cardId]
 
 	deck.splice(r, 1)
 	Db.shared.set 'answerdeck', deck

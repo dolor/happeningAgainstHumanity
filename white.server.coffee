@@ -1,4 +1,4 @@
-exports.whiteCards = !->
+exports.cards = !->
 	return [
 		"Michelle Obama's arms.",
 		"White people.",

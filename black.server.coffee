@@ -1,4 +1,4 @@
-exports.blackCards = !->
+exports.cards = !->
 	return [
 		{play: 1, text:"Who stole the cookies from the cookie jar?"},
 		{play: 1, text:"What is the next great Kickstarter project?"},
