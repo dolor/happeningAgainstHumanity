@@ -2,7 +2,6 @@ Db = require 'db'
 Event = require 'event'
 Plugin = require 'plugin'
 Timer = require 'timer'
-Util = require 'util'
 Black = require 'black'
 White = require 'white'
 {tr} = require 'i18n'
@@ -292,11 +291,9 @@ exports.closevotes = !->
 			showwinners.push round
 			Db.personal(userId).set 'showwinners', showwinners
 
-		winnerString = Util.getWinnerNames winners
-
 		Event.create
 			unit: 'game'
-			text: tr('%1 won the round!', winnerString)
+			text: tr('%1 won the round!')
 			include: ['all']
 
 	nextround()

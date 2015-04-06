@@ -9,7 +9,6 @@ Server = require 'server'
 Social = require 'social'
 Time = require 'time'
 Ui = require 'ui'
-Util = require 'util'
 Markdown = require 'markdown'
 {tr} = require 'i18n'
 
@@ -268,9 +267,8 @@ popWinnerModal = !->
 	answers = winner.a
 	players = winner.p
 
-	winnerString = Util.getWinnerNames(players)
 
-	Modal.show tr('Winner%1 of round %2: %3', (if players.length > 1 then 's' else ''), round, winnerString), !->
+	Modal.show tr('Winner%1 of round %2: %3', (if players.length > 1 then 's' else ''), round), !->
 		Dom.div !->
 			Dom.style
 				maxHeight: (Dom.viewport.get('height') - 150) + 'px'
