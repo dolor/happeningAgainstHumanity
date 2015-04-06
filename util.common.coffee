@@ -1,0 +1,3 @@
+placeholder = ->
+	log 'Hello'
+	return
